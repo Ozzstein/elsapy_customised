@@ -21,13 +21,15 @@ class ElsSearch():
         'scopus',
     ]
 
-    def __init__(self, query, index):
+    def __init__(self, query, date, start, index):
         """Initializes a search object with a query and target index."""
         self.query = query
+        self.date = date
+        self.start = start
         self.index = index
         self._cursor_supported = (index in self._cursored_indexes)
         self._uri = self._base_url + self.index + '?query=' + url_encode(
-                self.query)
+                self.query) + '&date=' + url_encode(self.date) + '&start=' + url_encode(self.start)
         self.results_df = pd.DataFrame()
 
     # properties
@@ -40,6 +42,26 @@ class ElsSearch():
     def query(self, query):
         """Sets the search query"""
         self._query = query
+
+    @property
+    def date(self):
+        """Gets the search date"""
+        return self._date
+
+    @date.setter
+    def date(self, date):
+        """Sets the search date"""
+        self._date = date
+
+    @property
+    def start(self):
+        """Gets the search start"""
+        return self._start
+
+    @start.setter
+    def start(self, start):
+        """Sets the search start"""
+        self._start = start
 
     @property
     def index(self):
